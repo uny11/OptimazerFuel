@@ -1,11 +1,11 @@
 # 🏎️ OptimazerFuel
 
+EN CONSTRUCCION
+
 **OptimazerFuel** es una herramienta desarrollada en Python que buscan optimizar el coste de repostaje de su vehículo..
 
 A diferencia de otros buscadores, este script no solo busca el precio más bajo, sino que calcula el **Coste Real** del desplazamiento (ida y vuelta) para determinar si realmente sale a cuenta desviarse a una gasolinera más barata.
 
-![Cupra Formentor](https://images.unsplash.com/photo-1630514197420-569d20f18835?q=80&w=1000&auto=format&fit=crop) 
-*(Puedes sustituir esta URL por una foto propia de tu coche subida a GitHub)*
 
 ---
 
