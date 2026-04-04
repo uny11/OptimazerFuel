@@ -11,6 +11,8 @@ MY_POS = (float(os.getenv("MY_LAT")), float(os.getenv("MY_LON")))
 CONSUMO = float(os.getenv("COCHE_CONSUMO"))
 LITROS = float(os.getenv("LITROS_REPOSTAJE"))
 PRODUCTO = os.getenv("PRODUCTO_OFICIAL")  #Etiqueta oficial de la API, por ejemplo 'Gasolina 95 E5'
+RADIO_MAX = 20 #km
+NUM_RESULTADOS = 10 
 
 
 def get_gasolineras():
@@ -50,7 +52,7 @@ def calcular_ahorro():
         distancia_km = geodesic(MY_POS, g_pos).km
 
         # Filtramos por un radio razonable (20km)
-        if distancia_km > 20: continue
+        if distancia_km > RADIO_MAX: continue
 
         # --- CÁLCULO DEL COSTE REAL ---
         # 1. Lo que pagas en el surtidor
@@ -78,7 +80,7 @@ def calcular_ahorro():
     print(f"📍 Ubicación base: {MY_POS}")
     print("-" * 50)
 
-    for i, res in enumerate(resultados[:10], 1):
+    for i, res in enumerate(resultados[:NUM_RESULTADOS], 1):
         print(f"{i}. {res['nombre']} - {res['municipio']}")
         print(f"   📍 {res['direccion']}")
         print(f"   🛣️  Distancia: {res['distancia']:.2f} km")
