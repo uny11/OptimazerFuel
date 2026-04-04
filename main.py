@@ -8,7 +8,7 @@ load_dotenv()
 
 # Configuración desde .env
 MY_POS = (float(os.getenv("MY_LAT")), float(os.getenv("MY_LON")))
-CONSUMO = float(os.getenv("CUPRA_CONSUMO"))
+CONSUMO = float(os.getenv("COCHE_CONSUMO"))
 LITROS = float(os.getenv("LITROS_REPOSTAJE"))
 
 # Etiqueta oficial de la API para Gasolina 95 E5
