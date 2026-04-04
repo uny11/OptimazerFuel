@@ -1,7 +1,7 @@
 
-import requests
+import requests 
 from geopy.distance import geodesic
-import os
+import os 
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -10,7 +10,7 @@ load_dotenv()
 MY_POS = (float(os.getenv("MY_LAT")), float(os.getenv("MY_LON")))
 CONSUMO = float(os.getenv("COCHE_CONSUMO"))
 LITROS = float(os.getenv("LITROS_REPOSTAJE"))
-PRODUCTO = float(os.getenv("PRODUCTO_OFICIAL"))  #Etiqueta oficial de la API, por ejemplo 'Gasolina 95 E5'
+PRODUCTO = os.getenv("PRODUCTO_OFICIAL")  #Etiqueta oficial de la API, por ejemplo 'Gasolina 95 E5'
 
 
 def get_gasolineras():
@@ -78,7 +78,7 @@ def calcular_ahorro():
     print(f"📍 Ubicación base: {MY_POS}")
     print("-" * 50)
 
-    for i, res in enumerate(resultados[:20], 1):
+    for i, res in enumerate(resultados[:10], 1):
         print(f"{i}. {res['nombre']} - {res['municipio']}")
         print(f"   📍 {res['direccion']}")
         print(f"   🛣️  Distancia: {res['distancia']:.2f} km")
