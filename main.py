@@ -15,7 +15,7 @@ LITROS = float(os.getenv("LITROS_REPOSTAJE"))
 PRODUCTO_95 = 'Precio Gasolina 95 E5'
 
 def get_gasolineras():
-    url = "https://sedeaplicaciones.minetur.gob.es/ServiciosRestCarburantes/PreciosCarburantes/ListadoTodasPrecio"
+    url = "https://energia.serviciosmin.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/"
     try:
         response = requests.get(url, timeout=10)
         response.raise_for_status()
@@ -51,7 +51,7 @@ def calcular_ahorro():
         distancia_km = geodesic(MY_POS, g_pos).km
 
         # Filtramos por un radio razonable (20km)
-        if distancia_km > 20: continue
+        if distancia_km > 30: continue
 
         # --- CÁLCULO DEL COSTE REAL ---
         # 1. Lo que pagas en el surtidor
@@ -79,7 +79,7 @@ def calcular_ahorro():
     print(f"📍 Ubicación base: {MY_POS}")
     print("-" * 50)
 
-    for i, res in enumerate(resultados[:5], 1):
+    for i, res in enumerate(resultados[:20], 1):
         print(f"{i}. {res['nombre']} - {res['municipio']}")
         print(f"   📍 {res['direccion']}")
         print(f"   🛣️  Distancia: {res['distancia']:.2f} km")
@@ -89,4 +89,3 @@ def calcular_ahorro():
 
 if __name__ == "__main__":
     calcular_ahorro()
-
