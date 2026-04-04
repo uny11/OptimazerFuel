@@ -12,7 +12,9 @@ CONSUMO = float(os.getenv("COCHE_CONSUMO"))
 LITROS = float(os.getenv("LITROS_REPOSTAJE"))
 PRODUCTO = os.getenv("PRODUCTO_OFICIAL")  #Etiqueta oficial de la API, por ejemplo 'Gasolina 95 E5'
 RADIO_MAX = 20 #km
-NUM_RESULTADOS = 10 
+NUM_RESULTADOS = 10
+TELEGRAMTOKEN= os.getenv("TELEGRAM_TOKEN")
+TELEGRAMCHAT= os.getenv("TELEGRAM_CHAT")
 
 
 def get_gasolineras():
@@ -24,6 +26,23 @@ def get_gasolineras():
     except Exception as e:
         print(f"Error al conectar con la API: {e}")
         return []
+
+def enviar_telegram(mensaje):
+    token = TELEGRAMTOKEN
+    chat_id = TELEGRAMCHAT
+    if not token or not chat_id:
+        print("⚠️ Configuración de Telegram incompleta.")
+        return
+
+    url = f"https://api.telegram.org/bot{token}/sendMessage"
+    payload = {"chat_id": chat_id, "text": mensaje, "parse_mode": "Markdown"}
+    
+    try:
+        response = requests.post(url, json=payload)
+        if response.status_code == 200:
+            print("📩 Notificación enviada a Telegram.")
+    except Exception as e:
+        print(f"❌ Error enviando a Telegram: {e}")
 
 def calcular_ahorro():
     data = get_gasolineras()
@@ -76,7 +95,7 @@ def calcular_ahorro():
     # Ordenamos por el coste TOTAL (Gasolina + Viaje)
     resultados.sort(key=lambda x: x['coste_total'])
 
-    print(f"\n✅ ANÁLISIS PARA GASOLINA 95 E5 ({LITROS}L)")
+    print(f"\n✅ ANÁLISIS PARA {PRODUCTO} ({LITROS}L)")
     print(f"📍 Ubicación base: {MY_POS}")
     print("-" * 50)
 
@@ -88,5 +107,20 @@ def calcular_ahorro():
         print(f"   ⛽ COSTE TOTAL REAL: {res['coste_total']:.2f} €")
         print("-" * 50)
 
+    #Preparar mensaje para Telegram con la mejor opción
+        mejor = resultados[0]
+        mensaje = (
+            f"⛽ *¡Gasolinera más económica hoy!*\n\n"
+            f"🏢 *{mejor['nombre']}*\n"
+            f"📍 {mejor['municipio']}\n"
+            f"🛣️ Distancia: {mejor['distancia']:.2f} km\n"
+            f"💰 Precio: {mejor['precio_litro']:.3f} €/L\n"
+            f"⛽ *COSTE TOTAL: {mejor['coste_total']:.2f} €* (Inc. viaje)"
+        )
+        enviar_telegram(mensaje)
+
+
 if __name__ == "__main__":
+    
     calcular_ahorro()
+
