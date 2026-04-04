@@ -10,9 +10,8 @@ load_dotenv()
 MY_POS = (float(os.getenv("MY_LAT")), float(os.getenv("MY_LON")))
 CONSUMO = float(os.getenv("COCHE_CONSUMO"))
 LITROS = float(os.getenv("LITROS_REPOSTAJE"))
+PRODUCTO = = float(os.getenv("PRODUCTO_OFICIAL"))  #Etiqueta oficial de la API, por ejemplo 'Gasolina 95 E5'
 
-# Etiqueta oficial de la API para Gasolina 95 E5
-PRODUCTO_95 = 'Precio Gasolina 95 E5'
 
 def get_gasolineras():
     url = "https://energia.serviciosmin.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/"
@@ -32,7 +31,7 @@ def calcular_ahorro():
 
     for g in data:
         # Extraer precio 95
-        p_str = g[PRODUCTO_95].replace(',', '.')
+        p_str = g[PRODUCTO].replace(',', '.')
         
         if not p_str or p_str == "": 
             continue
