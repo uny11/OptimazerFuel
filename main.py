@@ -2,7 +2,8 @@
 import requests 
 from geopy.distance import geodesic
 import os
-import argparse 
+import argparse
+import json 
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -32,6 +33,20 @@ def configurar_argumentos():
     
     return parser.parse_args()
 
+def obtener_gps_termux():
+    """Llama a la API de Termux para obtener la ubicación real del GPS."""
+    try:
+        print("📡 Obteniendo ubicación GPS del móvil...")
+        # Ejecutamos el comando de Termux: -s es para 'single' (una lectura)
+        result = subprocess.run(['termux-location', '-s', 'gps'], capture_output=True, text=True, timeout=15)
+        
+        if result.returncode == 0:
+            data = json.loads(result.stdout)
+            return float(data['latitude']), float(data['longitude'])
+    except Exception as e:
+        print(f"⚠️ No se pudo obtener el GPS: {e}")
+    return None
+
 def get_gasolineras():
     url = "https://energia.serviciosmin.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/"
     try:
@@ -60,6 +75,21 @@ def enviar_telegram(mensaje):
         print(f"❌ Error enviando a Telegram: {e}")
 
 def calcular_ahorro(args):
+    
+    pos_actual = obtener_gps_termux()
+    
+    if pos_actual:
+        lat, lon = pos_actual
+        origen_nombre = "GPS Móvil"
+    else:
+        lat = float(os.getenv("MY_LAT"))
+        lon = float(os.getenv("MY_LON"))
+        origen_nombre = os.getenv("POSICION")
+
+    my_pos = (lat, lon)
+    
+    print(f"📍 Ubicación detectada: {origen_nombre} ({lat}, {lon})")
+    
     data = get_gasolineras()
     if not data: return
 
