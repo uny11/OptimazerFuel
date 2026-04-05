@@ -1,7 +1,8 @@
 
 import requests 
 from geopy.distance import geodesic
-import os 
+import os
+import argparse 
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -17,6 +18,19 @@ NUM_RESULTADOS = 5 #numero de gasolineras
 TELEGRAMTOKEN= os.getenv("TELEGRAM_TOKEN")
 TELEGRAMCHAT= os.getenv("TELEGRAM_CHAT")
 
+
+def configurar_argumentos():
+    """Configura los argumentos de línea de comandos."""
+    parser = argparse.ArgumentParser(description="Buscador de gasolineras baratas en España.")
+    
+    # Añadimos los argumentos con sus valores por defecto del .env
+    parser.add_argument("--radio", type=int, default=RADIO_MAX, help="Radio de búsqueda en km")
+    parser.add_argument("--num", type=int, default=NUM_RESULTADOS, help="Número de resultados a mostrar")
+    parser.add_argument("--litros", type=float, default=LITROS, help="Litros a repostar")
+    parser.add_argument("--consumo", type=float, default=CONSUMO, help="Consumo del coche l/100km")
+    parser.add_argument("--prod", type=str, default=PRODUCTO, help="Tipo de Gasolina")
+    
+    return parser.parse_args()
 
 def get_gasolineras():
     url = "https://energia.serviciosmin.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/"
@@ -45,7 +59,7 @@ def enviar_telegram(mensaje):
     except Exception as e:
         print(f"❌ Error enviando a Telegram: {e}")
 
-def calcular_ahorro():
+def calcular_ahorro(args):
     data = get_gasolineras()
     if not data: return
 
@@ -53,7 +67,7 @@ def calcular_ahorro():
 
     for g in data:
         # Extraer precio 95
-        p_str = g[PRODUCTO].replace(',', '.')
+        p_str = g[args.prod].replace(',', '.')
         
         if not p_str or p_str == "": 
             continue
@@ -72,15 +86,15 @@ def calcular_ahorro():
         distancia_km = geodesic(MY_POS, g_pos).km
 
         # Filtramos por un radio razonable (20km)
-        if distancia_km > RADIO_MAX: continue
+        if distancia_km > args.radio: continue
 
         # --- CÁLCULO DEL COSTE REAL ---
         # 1. Lo que pagas en el surtidor
-        coste_repostaje = precio * LITROS
+        coste_repostaje = precio * args.litros
         
         # 2. Lo que gastas en llegar (Ida + Vuelta)
         # consumo/100 * km_totales * precio_litro
-        coste_desplazamiento = (distancia_km * 2) * (CONSUMO / 100) * precio
+        coste_desplazamiento = (distancia_km * 2) * (args.consumo / 100) * precio
         
         coste_total_operacion = coste_repostaje + coste_desplazamiento
 
@@ -96,11 +110,11 @@ def calcular_ahorro():
     # Ordenamos por el coste TOTAL (Gasolina + Viaje)
     resultados.sort(key=lambda x: x['coste_total'])
 
-    print(f"\n✅ ANÁLISIS PARA {PRODUCTO} ({LITROS}L)")
+    print(f"\n✅ ANÁLISIS PARA {args.prod} ({args.litros}L)")
     print(f"📍 Ubicación base: {POS}")
     print("-" * 50)
 
-    for i, res in enumerate(resultados[:NUM_RESULTADOS], 1):
+    for i, res in enumerate(resultados[:args.num], 1):
         print(f"{i}. {res['nombre']} - {res['municipio']}")
         print(f"   📍 {res['direccion']}")
         print(f"   🛣️  Distancia: {res['distancia']:.2f} km")
@@ -123,6 +137,6 @@ def calcular_ahorro():
 
 
 if __name__ == "__main__":
-    
-    calcular_ahorro()
+    mis_args = configurar_argumentos()
+    calcular_ahorro(mis_args)
 
