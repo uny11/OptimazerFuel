@@ -1,10 +1,8 @@
 # 🏎️ OptimazerFuel
 
-EN CONSTRUCCION
+**OptimazerFuel** es una herramienta desarrollada en Python que buscan optimizar el coste de repostaje de su vehículo en España.
 
-**OptimazerFuel** es una herramienta desarrollada en Python que buscan optimizar el coste de repostaje de su vehículo..
-
-A diferencia de otros buscadores, este script no solo busca el precio más bajo, sino que calcula el **Coste Real** del desplazamiento (ida y vuelta) para determinar si realmente sale a cuenta desviarse a una gasolinera más barata.
+A diferencia de otros buscadores, este script no solo busca el precio más bajo, sino que calcula el **Coste Real** del desplazamiento (ida y vuelta) respecto a una posicion para determinar si realmente sale a cuenta desviarse a una gasolinera más barata.
 
 
 ---
@@ -23,3 +21,9 @@ A diferencia de otros buscadores, este script no solo busca el precio más bajo,
    ```bash
    git clone [https://github.com/uny11/OptimazerFuel.git](https://github.com/uny11/OptimazerFuel.git)
    cd OptimazerFuel
+   python main.py
+   ```
+   
+   Para más detalle puedes hacer:
+   ```bash
+   python main.py --help
