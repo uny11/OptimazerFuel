@@ -19,7 +19,7 @@ A diferencia de otros buscadores, este script no solo busca el precio más bajo,
 
 1. **Clonar el repositorio:**
    ```bash
-   git clone [https://github.com/uny11/OptimazerFuel.git](https://github.com/uny11/OptimazerFuel.git)
+   git clone https://github.com/uny11/OptimazerFuel.git
    cd OptimazerFuel
    python main.py
    ```
