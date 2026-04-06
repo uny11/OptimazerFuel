@@ -3,7 +3,8 @@ import requests
 from geopy.distance import geodesic
 import os
 import argparse
-import json 
+import json
+import subprocess 
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -43,6 +44,9 @@ def obtener_gps_termux():
         if result.returncode == 0:
             data = json.loads(result.stdout)
             return float(data['latitude']), float(data['longitude'])
+    except FileNotFoundError:
+        # Este error saltará en Arch Linux porque 'termux-location' no existe
+        return None
     except Exception as e:
         print(f"⚠️ No se pudo obtener el GPS: {e}")
     return None
