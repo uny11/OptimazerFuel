@@ -39,11 +39,11 @@ def obtener_gps_termux():
     try:
         print("📡 Obteniendo ubicación GPS del móvil...")
         # Ejecutamos el comando de Termux: -s es para 'single' (una lectura)
-        result = subprocess.run([['termux-location', '-p', 'network', '-r', 'last'], 
+        result = subprocess.run(['termux-location', '-p', 'network', '-r', 'last'], 
             capture_output=True, 
             text=True, 
             timeout=10
-        )        
+            )        
         if result.returncode == 0:
             data = json.loads(result.stdout)
             return float(data['latitude']), float(data['longitude'])
