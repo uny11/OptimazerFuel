@@ -30,7 +30,7 @@ def configurar_argumentos():
     parser.add_argument("--num", type=int, default=NUM_RESULTADOS, help="Número de resultados a mostrar")
     parser.add_argument("--litros", type=float, default=LITROS, help="Litros a repostar")
     parser.add_argument("--consumo", type=float, default=CONSUMO, help="Consumo del coche l/100km")
-    parser.add_argument("--prod", type=str, default=PRODUCTO, help="Tipo de Gasolina")
+    parser.add_argument("--prod", type=str, default=PRODUCTO, help="'Precio Gasolina 95 E5' o 'Gasóleo A'")
     
     return parser.parse_args()
 

@@ -13,7 +13,8 @@ A diferencia de otros buscadores, este script no solo busca el precio más bajo,
 - 🧠 **Algoritmo de Ahorro Real:** Calcula: `(Litros × Precio) + (Consumo × Distancia × 2 × Precio)`.
 - 📍 **Geolocalización:** Cálculo de distancia ortodrómica mediante la librería `geopy`.
 - 🛡️ **Privacidad:** Uso de variables de entorno (`.env`) para proteger tu ubicación base.
-- 🐧 **Arch Linux Ready:** Optimizado para entornos limpios mediante `venv`.
+- 🐧 **Linux Ready:** Optimizado para entornos limpios mediante `venv`.
+- 🌍 **SMS Telegram:** Envia un sms al chat de Telegram para compartir resultados.
 
 ## 🚀 Instalación y Uso
 
@@ -21,9 +22,45 @@ A diferencia de otros buscadores, este script no solo busca el precio más bajo,
    ```bash
    git clone https://github.com/uny11/OptimazerFuel.git
    cd OptimazerFuel
-   python main.py
    ```
-   
-   Para más detalle puedes hacer:
+
+2. **Lanzar el script con variables por defecto**
+   ```bash
+   python main.py 
+   ```
+
+## 🚀 Ayuda
+
+1. El script permite argumentos, se puede ver una descripcion con:
    ```bash
    python main.py --help
+   
+   usage: main.py [-h] [--radio RADIO] [--num NUM] [--litros LITROS] [--consumo CONSUMO] [--prod PROD]
+
+   Buscador de gasolineras baratas en España.
+
+   options:
+      -h, --help         show this help message and exit
+      --radio RADIO      Radio de búsqueda en km
+      --num NUM          Número de resultados a mostrar
+      --litros LITROS    Litros a repostar
+      --consumo CONSUMO  Consumo del coche l/100km
+      --prod PROD        'Precio Gasolina 95 E5' o 'Gasóleo A'
+   ```
+
+
+2. Se puede lanzar el script main.py desde un terminal de un movil Android, como Termux, el script buscara la posicion GPS del movil para hacer los calculos, si no encuentra nada usa las variables del archivo .env
+
+3. Ejemplo de archivo `.env`:
+   ```bash
+   POSICION=Casa
+   MY_LAT=39.449211
+   MY_LON=1.44565
+
+   COCHE_CONSUMO=7.2 
+   LITROS_REPOSTAJE=40
+   PRODUCTO_OFICIAL=Precio Gasolina 95 E5
+   
+   TELEGRAM_TOKEN= escribe el token de tu bot de telegram
+   TELEGRAM_CHAT= escribe tu id de chat
+   ```
