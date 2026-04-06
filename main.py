@@ -145,7 +145,7 @@ def calcular_ahorro(args):
     resultados.sort(key=lambda x: x['coste_total'])
 
     print(f"\n✅ ANÁLISIS PARA {args.prod} ({args.litros}L)")
-    print(f"📍 Ubicación base: {POS}")
+    print(f"📍 Ubicación base: {origen_nombre}")
     print("-" * 50)
 
     for i, res in enumerate(resultados[:args.num], 1):
