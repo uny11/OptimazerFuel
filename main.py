@@ -82,7 +82,7 @@ def calcular_ahorro(args):
     
     pos_actual = obtener_gps_termux()
     
-    if pos_actual:
+    if pos_actual is not None:
         lat, lon = pos_actual
         origen_nombre = "GPS Móvil"
     else:
