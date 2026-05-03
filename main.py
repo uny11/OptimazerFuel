@@ -117,7 +117,7 @@ def calcular_ahorro(args):
             continue
 
         # Calcular distancia real
-        distancia_km = geodesic(MY_POS, g_pos).km
+        distancia_km = geodesic(my_pos, g_pos).km
 
         # Filtramos por un radio razonable (20km)
         if distancia_km > args.radio: continue
